@@ -1,18 +1,19 @@
-class Mastermind
-  def welcome
-    puts "Welcome to MASTERMIND"
-    puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
-    output = gets
-      if output == 'p'
-        #run the game
-      elsif output == 'i'
-        #read the instructions
-      else #output == 'q'
-        #exit game
-      end
+require_relative 'game'
 
+puts "Welcome to MASTERMIND"
+puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
 
-  #array = ["red", "blue", "orange", "purple"]
-  #array[rand(1..4)]
+output = gets
+g = Game.new
+  if output == 'p'|| output == 'play'
+    g.play
+    #why is this running if play doesn't exist
+  elsif output == 'i'|| output == 'instructions'
+    g.instructions
+  elsif output == 'q' || output == 'quit'
+    #exit game
+  else
+    puts "This is not a valid option. Try again."
   end
-end
+
+g.beginning_explanation
