@@ -1,7 +1,7 @@
 require 'pry'
 class Game
   attr_reader :guesses, :output, :correct
-
+#TODO do we need all the attributes and instance variables?
   def initialize
     colors = ["r", "g", "b", "y"]
     @time = Time.now
@@ -40,18 +40,12 @@ class Game
 
     def position_number(guesses)
       @position = 0
-      index = 0
-      #TODO change while loops to iterators
-      while index < 4 do
-        if guesses[index] == @correct[index]
-          @position +=1
-          index += 1
-        else
-          index +=1
+      guesses.each_with_index do |guess, index|
+        if guess == correct[index]
+          @position += 1
         end
-      end
-      @position
       correct_number(guesses)
+      end
     end
 
     def correct_number(guesses)
@@ -64,6 +58,8 @@ class Game
       #this is wrong
       @corrects = []
       guesses_array = guesses.split("")
+      #TODO I want to take the guesses_array and iterate through it so that if I get a match, it deletes from the correct section and doesn't run it again
+      #find_index
       while index < 4 do
         @corrects << guesses_array.find{|color| color == @correct[index]}
         index +=1
