@@ -17,14 +17,17 @@ class Game
   def beginning_explanation
     puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
     output = gets.chomp
+    #TODO lengths are off. will play whether short or long
       if output.length > 4
         "Your guess is too long. Try again."
+        output = gets.chomp
       elsif output.length < 4
         "Your guess is too short. Try again."
+        output = gets.chomp
       elsif output == 'q' || output == 'quit'
-        print_stats
+        abort( "Exiting game")
       elsif output == 'c' || output == 'cheat'
-        secret_code
+        #TODO secret_code
       else
         game_method(output)
       end
@@ -69,10 +72,9 @@ class Game
     def results(guesses)
       guesses_string = guesses.join("")
       @postions = @postions.to_s
-      #failure: gives wrong number in correct_num (says 4 when should be 1)
+      #TODO failure: gives wrong number in correct_num (says 4 when should be 1)
       #gives blank for position_num which should be 1
       #count is correct
-      #replays the 'i have a begginner sequence code'
       puts "'#{guesses_string.upcase}' has #{@correct_num} of the correct elements with #{@postions} in the correct postions \nYou've taken #{@count} guess"
       beginning_explanation
     end
@@ -89,15 +91,16 @@ class Game
       end
       @correct = @correct.join("")
       puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{minutes} minutes, #{seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
-      output = gets
-        if output.chomp == 'p' || output.chomp == 'play'
+      output = gets.chomp
+        if output == 'p' || output == 'play'
           g = Game.new
           g.beginning_explanation
-        elsif output.chomp == 'q' || output.chomp == 'quit'
-          # exit_game
+        elsif output == 'q' || output == 'quit'
+          abort( "Exiting game.")
         else
           puts "This is not an option."
           puts "Do you want to (p)lay again or (q)uit?"
+          output = gets
         end
 
     end

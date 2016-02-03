@@ -12,8 +12,8 @@ output = gets.chomp
     i = Instructions.new
     i.instructions
   elsif output == 'q' || output == 'quit'
-    #exit game
-  else
+     abort( "Exiting game")
+   else
     puts "This is not a valid option. Try again."
     puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
     output = gets.chomp
@@ -24,7 +24,7 @@ output = gets.chomp
       i = Instructions.new
       i.instructions
     elsif output == 'q' || output == 'quit'
-      #exit game
+      abort( "Exiting game.")
     else
       puts "This is not a valid option. Try again."
       puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
