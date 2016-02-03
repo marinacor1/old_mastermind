@@ -5,19 +5,20 @@ class Game
   def initialize
     colors = ["r", "g", "b", "y"]
     @time = Time.now
+    # @correct = ["r", "g", "b", "g"]
     @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
     beginning_explanation
   end
 
   def beginning_explanation
-    correct = @correct.join("")
+    answer = @correct.join("")
     puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
     output = gets.chomp
       if output == 'q' || output == 'quit'
         abort( "Exiting game")
       elsif output == 'c' || output == 'cheat'
-        puts "Shh. The secret code is: #{correct}."
+        puts "Shh. The secret code is: #{answer}."
       elsif output.length > 4
         puts "Your guess is too long. Try again."
         beginning_explanation
@@ -31,7 +32,8 @@ class Game
 
     def game_method(guesses)
       @count +=1
-      if guesses.chars.eql?(correct)
+      @guesses_array = guesses.split("")
+      if @guesses_array.eql?(correct)
         end_game
       else
         position_number(guesses)
@@ -40,31 +42,26 @@ class Game
 
     def position_number(guesses)
       @position = 0
-      guesses.each_with_index do |guess, index|
+      @guesses_array = guesses.split("")
+      @guesses_array.each_with_index do |guess, index|
         if guess == correct[index]
           @position += 1
         end
+        end
       correct_number(guesses)
-      end
     end
 
     def correct_number(guesses)
-      #TODO doesn't account for doubles. for example if correct = 'yybg' if you guess 'gbby' will say 'you have 4 of the correct elements in one correct position'
-      #also for correct = bggr said that guess bygr has 4 correct elements and 3 in correct position.
-      # @corrects = []
-      index = 0
-      #TODO change while loops to iterators
-      # binding.pry
-      #this is wrong
-      @corrects = []
-      guesses_array = guesses.split("")
-      #TODO I want to take the guesses_array and iterate through it so that if I get a match, it deletes from the correct section and doesn't run it again
-      #find_index
-      while index < 4 do
-        @corrects << guesses_array.find{|color| color == @correct[index]}
-        index +=1
-       end
-       @correct_num = @corrects.length
+      correct = @correct.dup
+      @correct_num = 0
+      @guesses_array.each do |letter|
+        if correct.include?(letter)
+          @correct_num +=1
+          correct.delete(letter)
+          correct
+        end
+      end
+      @correct_num
       results(guesses)
     end
 
