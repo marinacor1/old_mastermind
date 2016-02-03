@@ -1,14 +1,16 @@
 require 'pry'
 class Game
-  attr_reader :guesses, :output, :correct
-  attr_accessor :count
+  attr_reader :guesses, :output, :correct, :time
+  attr_accessor :count, :positions
 
   def initialize
     colors = ["r", "g", "b", "y"]
     @correct = ["r", "g", "b", "y"]
+    @time = Time.now
     # correct = []
     # correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
+    @positions = []
     beginning_explanation
   end
 
@@ -34,50 +36,68 @@ class Game
       if guesses.eql?(correct)
         end_game
       else
-        postion_number
-        correct_number
-        results
+        position_number(guesses)
       end
     end
 
-
-    def position_number
+    def position_number(guesses)
       index = 0
-      @position_num = 0
+      # @correct = @correct.join("")
       while index <= @correct.length
-        if guesses[index] == @correct.join[index]
-          @position_num +=1
+        if guesses[index] == @correct[index]
+          @positions << index
           index += 1
         else
           index +=1
         end
       end
-      @position_num
+      @postions
+      correct_number(guesses)
     end
 
-    def correct_number
+    def correct_number(guesses)
       @correct_num = 0
-      @guesses.each do |color|
+      guesses.each do |color|
         if correct.include?(color)
-          correct_num +=1
+          @correct_num +=1
         end
       end
       @correct_num
+      results(guesses)
     end
 
-    def results
-      puts "'#{guesses.upcase}' has #{correct_num} of the correct elements with #{postion_num} in the correct postions \n You've taken #{@count} guess"
+    def results(guesses)
+      guesses_string = guesses.join("")
+      @postions = @postions.to_s
+      #failure: gives wrong number in correct_num (says 4 when should be 1)
+      #gives blank for position_num which should be 1
+      #count is correct
+      #replays the 'i have a begginner sequence code'
+      puts "'#{guesses_string.upcase}' has #{@correct_num} of the correct elements with #{@postions} in the correct postions \nYou've taken #{@count} guess"
+      beginning_explanation
     end
 
     def end_game
-      puts "Congratulation! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{minutes} minutes, #{seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+      new_time = Time.now
+      diff = new_time - @time
+      if diff > 60
+        minutes = (diff/60).to_i
+        seconds = ((diff/60)/100) * 100
+      else
+        minutes = 0
+        seconds = diff.to_i
+      end
+      @correct = @correct.join("")
+      puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{minutes} minutes, #{seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
       output = gets
         if output.chomp == 'p' || output.chomp == 'play'
-          ng = Game.new
+          g = Game.new
+          g.beginning_explanation
         elsif output.chomp == 'q' || output.chomp == 'quit'
-          exit_game
+          # exit_game
         else
           puts "This is not an option."
+          puts "Do you want to (p)lay again or (q)uit?"
         end
 
     end
