@@ -1,6 +1,6 @@
 require_relative 'game'
 require_relative 'instructions'
-
+#TODO should this be written in class/ method format or just as runner?
 puts "Welcome to MASTERMIND"
 puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
 
@@ -23,6 +23,8 @@ output = gets.chomp
     elsif output == 'i'|| output == 'instructions'
       i = Instructions.new
       i.instructions
+      puts "Would you like to (p)lay or (q)uit?"
+      output = gets.chomp
     elsif output == 'q' || output == 'quit'
       abort( "Exiting game.")
     else

@@ -1,14 +1,11 @@
 require 'pry'
 class Game
-  attr_reader :guesses, :output, :correct, :time
-  attr_accessor :count, :positions
+  attr_reader :guesses, :output, :correct
 
   def initialize
     colors = ["r", "g", "b", "y"]
-    @correct = ["r", "g", "b", "y"]
     @time = Time.now
-    # correct = []
-    # correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
+    @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
     beginning_explanation
   end
@@ -34,8 +31,7 @@ class Game
 
     def game_method(guesses)
       @count +=1
-      guesses = guesses.chars
-      if guesses.eql?(correct)
+      if guesses.chars.eql?(correct)
         end_game
       else
         position_number(guesses)
@@ -45,6 +41,7 @@ class Game
     def position_number(guesses)
       @position = 0
       index = 0
+      #TODO change while loops to iterators
       while index < 4 do
         if guesses[index] == @correct[index]
           @position +=1
@@ -58,26 +55,25 @@ class Game
     end
 
     def correct_number(guesses)
-      @correct_num = 0
+      #TODO doesn't account for doubles. for example if correct = 'yybg' if you guess 'gbby' will say 'you have 4 of the correct elements in one correct position'
+      #also for correct = bggr said that guess bygr has 4 correct elements and 3 in correct position.
+      # @corrects = []
       index = 0
+      #TODO change while loops to iterators
+      # binding.pry
+      #this is wrong
+      @corrects = []
+      guesses_array = guesses.split("")
       while index < 4 do
-        if guesses.include?(@correct[index])
-           @correct_num +=1
-           index +=1
-         else
-           index +=1
-         end
+        @corrects << guesses_array.find{|color| color == @correct[index]}
+        index +=1
        end
+       @correct_num = @corrects.length
       results(guesses)
     end
 
     def results(guesses)
-      guesses_string = guesses.join("")
-      @position = @position.to_s
-      #TODO failure: gives wrong number in correct_num (says 4 when should be 1)
-      #gives blank for position_num which should be 1
-      #count is correct
-      puts "'#{guesses_string.upcase}' has #{@correct_num} of the correct elements with #{@position} in the correct position(s). \nYou've taken #{@count} guesses."
+      puts "'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
       beginning_explanation
     end
 
@@ -86,7 +82,7 @@ class Game
       diff = new_time - @time
       if diff > 60
         minutes = (diff/60).to_i
-        seconds = ((diff/60)/100) * 100
+        seconds = (((diff/60)/100) * 100).to_i
       else
         minutes = 0
         seconds = diff.to_i
@@ -104,7 +100,6 @@ class Game
           puts "Do you want to (p)lay again or (q)uit?"
           output = gets
         end
-
     end
 
 
