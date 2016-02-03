@@ -10,7 +10,6 @@ class Game
     # correct = []
     # correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
-    @positions = []
     beginning_explanation
   end
 
@@ -44,37 +43,41 @@ class Game
     end
 
     def position_number(guesses)
+      @position = 0
       index = 0
-      while index <= @correct.length
+      while index < 4 do
         if guesses[index] == @correct[index]
-          @positions << index
+          @position +=1
           index += 1
         else
           index +=1
         end
       end
-      @postions
+      @position
       correct_number(guesses)
     end
 
     def correct_number(guesses)
       @correct_num = 0
-      guesses.each do |color|
-        if correct.include?(color)
-          @correct_num +=1
-        end
-      end
-      @correct_num
+      index = 0
+      while index < 4 do
+        if guesses.include?(@correct[index])
+           @correct_num +=1
+           index +=1
+         else
+           index +=1
+         end
+       end
       results(guesses)
     end
 
     def results(guesses)
       guesses_string = guesses.join("")
-      @postions = @postions.to_s
+      @position = @position.to_s
       #TODO failure: gives wrong number in correct_num (says 4 when should be 1)
       #gives blank for position_num which should be 1
       #count is correct
-      puts "'#{guesses_string.upcase}' has #{@correct_num} of the correct elements with #{@postions} in the correct postions \nYou've taken #{@count} guess"
+      puts "'#{guesses_string.upcase}' has #{@correct_num} of the correct elements with #{@position} in the correct position(s). \nYou've taken #{@count} guesses."
       beginning_explanation
     end
 
