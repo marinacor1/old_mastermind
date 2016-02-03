@@ -1,20 +1,14 @@
 require_relative 'game'
 require_relative 'instructions'
-#TODO should this be written in class/ method format or just as runner?
-puts "Welcome to MASTERMIND"
-puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
 
-output = gets.chomp
-  if output == 'p'|| output == 'play'
-    g = Game.new
-    g.beginning_explanation
-  elsif output == 'i'|| output == 'instructions'
-    i = Instructions.new
-    i.instructions
-  elsif output == 'q' || output == 'quit'
-     abort( "Exiting game")
-   else
-    puts "This is not a valid option. Try again."
+class Mastermind
+
+  def initialize
+    puts "Welcome to MASTERMIND"
+    user_output
+  end
+
+  def user_output
     puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
     output = gets.chomp
     if output == 'p'|| output == 'play'
@@ -23,13 +17,17 @@ output = gets.chomp
     elsif output == 'i'|| output == 'instructions'
       i = Instructions.new
       i.instructions
-      puts "Would you like to (p)lay or (q)uit?"
-      output = gets.chomp
     elsif output == 'q' || output == 'quit'
-      abort( "Exiting game.")
-    else
+       abort( "Exiting game.")
+     else
+       erroneous_response
+     end
+   end
+
+   def erroneous_response
       puts "This is not a valid option. Try again."
-      puts "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
-      output = gets.chomp
-    end
-  end
+      user_output
+   end
+end
+
+m= Mastermind.new
