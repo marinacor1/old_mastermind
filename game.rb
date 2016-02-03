@@ -5,7 +5,6 @@ class Game
   def initialize
     colors = ["r", "g", "b", "y"]
     @time = Time.now
-    # @correct = ["r", "g", "b", "g"]
     @correct = [colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)], colors[rand(0..3)]]
     @count = 0
     beginning_explanation
@@ -70,18 +69,22 @@ class Game
       beginning_explanation
     end
 
-    def end_game
+    def stopwatch
       new_time = Time.now
       diff = new_time - @time
       if diff > 60
         minutes = (diff/60).to_i
         seconds = (((diff/60)/100) * 100).to_i
       else
-        minutes = 0
-        seconds = diff.to_i
+        @minutes = 0
+        @seconds = diff.to_i
       end
+    end
+
+    def end_game
+      stopwatch
       @correct = @correct.join("")
-      puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{minutes} minutes, #{seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+      puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
       output = gets.chomp
         if output == 'p' || output == 'play'
           g = Game.new
