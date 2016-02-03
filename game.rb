@@ -15,19 +15,19 @@ class Game
   end
 
   def beginning_explanation
+    correct = @correct.join("")
     puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
     output = gets.chomp
-    #TODO lengths are off. will play whether short or long
-      if output.length > 4
-        "Your guess is too long. Try again."
-        output = gets.chomp
-      elsif output.length < 4
-        "Your guess is too short. Try again."
-        output = gets.chomp
-      elsif output == 'q' || output == 'quit'
+      if output == 'q' || output == 'quit'
         abort( "Exiting game")
       elsif output == 'c' || output == 'cheat'
-        #TODO secret_code
+        puts "Shh. The secret code is: #{correct}."
+      elsif output.length > 4
+        puts "Your guess is too long. Try again."
+        beginning_explanation
+      elsif output.length < 4
+        puts "Your guess is too short. Try again."
+        beginning_explanation
       else
         game_method(output)
       end
@@ -45,7 +45,6 @@ class Game
 
     def position_number(guesses)
       index = 0
-      # @correct = @correct.join("")
       while index <= @correct.length
         if guesses[index] == @correct[index]
           @positions << index
