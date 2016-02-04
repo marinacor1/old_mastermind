@@ -13,7 +13,7 @@ class Mastermind
     output = gets.chomp
     if output == 'p'|| output == 'play'
       g = Game.new
-      g.beginning_explanation
+      g.game_start
     elsif output == 'i'|| output == 'instructions'
       i = Instructions.new
       i.instructions
