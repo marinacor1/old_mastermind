@@ -1,5 +1,7 @@
 require 'pry'
 require_relative 'stopwatch'
+require 'colorize'
+
 class Game
   attr_reader :guesses, :output, :correct, :minutes, :seconds, :initial_time
 
@@ -16,11 +18,8 @@ class Game
   #     output = gets.chomp
   #     path_selector(output)
   #     end
-  #
   # end
-  def player_guess
-    puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
-  end
+
   def game_start
     player_guess
     # while game_still_going?
@@ -33,18 +32,27 @@ class Game
     path_selector(output)
   end
 
+  def player_guess
+    puts "I have generated a beginner sequence with four elements made up of:"
+    print "(r)ed".colorize(:red)
+    print ", (g)reen".colorize(:green)
+    print ", (b)lue".colorize(:blue)
+    print ", and (y)ellow.".colorize(:yellow)
+    puts "Use (q)uit at any time to end the game. What's your guess?"
+  end
+
   def path_selector(output)
     answer = @correct.join("")
     if output == 'q' || output == 'quit'
       abort( "Exiting game")
     elsif output == 'c' || output == 'cheat'
-      puts "Shh. The secret code is: #{answer}."
+      puts "¯\\_(ツ)_/¯ Fine, you cheater. I will give you the answer. The secret code is: #{answer.upcase}.".colorize(:light_blue)
       game_start
     elsif output.length > 4
-      puts "Your guess is too long. Try again."
+      puts "Oh no! Your guess is too long. Try again."
       game_start
     elsif output.length < 4
-      puts "Your guess is too short. Try again."
+      puts "Oh no! Your guess is too short. Try again."
       game_start
     else
       guess_validator(output)
@@ -61,6 +69,14 @@ class Game
     end
   end
 
+  def results(guesses)
+    position_number(guesses)
+    correct_number(guesses)
+    feedback(guesses)
+    #if you get it wrong, i don't want it to prompt the same, but rather just give option to guess
+    game_start
+  end
+
   def position_number(guesses)
     @position = 0
     guesses = guesses.split("")
@@ -75,34 +91,25 @@ class Game
   def correct_number(guesses)
     guesses = guesses.split("")
     correct = @correct.dup
-    @correct_num = 0
+    correct_num = 0
     guesses.each do |letter|
       if correct.include?(letter)
-        @correct_num +=1
-        correct.delete(letter)
+        correct_num +=1
+        correct.delete_at(correct.index(letter))
         correct
       end
     end
-    @correct_num
+    @correct_num = correct_num
   end
 
-  def results(guesses)
-    position_number(guesses)
-    correct_number(guesses)
+  def feedback(guesses)
     puts "'#{guesses.upcase}' has #{@correct_num} of the correct elements with #{(@position.to_s)} in the correct position(s). \nYou've taken #{@count} guess(es)."
-    game_start
   end
 
   def stopwatch
-    # new_time = Time.now
-    diff = Time.now - @initial_time
-    if diff > 60
-      @minutes = (diff/60).to_i
-      @seconds = (((diff/60)/100) * 100).to_i
-    else
-      @minutes = 0
-      @seconds = diff.to_i
-    end
+    time_diff = (Time.now - initial_time).divmod(60)
+    @minutes = time_diff[0]
+    @seconds = time_diff[1].to_i
   end
 
   def congrats_message
