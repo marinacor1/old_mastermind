@@ -10,8 +10,19 @@ class Game
     @count = 0
   end
 
-  def game_start
+  # def game_start
+  #   while #game is running #
+  #     do
+  #     output = gets.chomp
+  #     path_selector(output)
+  #     end
+  #
+  # end
+  def player_guess
     puts "I have generated a beginner sequence with four elements made up of: (r)ed, (g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. What's your guess?"
+  end
+  def game_start
+    player_guess
     # while game_still_going?
       # 1: get input from user
       # 2: figure out proper steps for that input
@@ -94,10 +105,14 @@ class Game
     end
   end
 
-  def end_game
-    stopwatch
+  def congrats_message
     @correct = @correct.join("")
     puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+  end
+
+  def end_game
+    stopwatch
+    congrats_message
     output = gets.chomp
       if output == 'p' || output == 'play'
         g = Game.new
@@ -105,8 +120,7 @@ class Game
       elsif output == 'q' || output == 'quit'
         abort( "Exiting game.")
       else
-        puts "This is not an option."
-        puts "Do you want to (p)lay again or (q)uit?"
+        puts "This is not an option. \nDo you want to (p)lay again or (q)uit?"
         output = gets
       end
   end
