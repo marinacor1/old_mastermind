@@ -94,8 +94,8 @@ class Game
   end
 
   def stopwatch
-    new_time = Time.now
-    diff = new_time - @initial_time
+    # new_time = Time.now
+    diff = Time.now - @initial_time
     if diff > 60
       @minutes = (diff/60).to_i
       @seconds = (((diff/60)/100) * 100).to_i
@@ -106,8 +106,8 @@ class Game
   end
 
   def congrats_message
-    @correct = @correct.join("")
-    puts "Congratulation! You guessed the sequence '#{@correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
+    correct = @correct.join("")
+    puts "Congratulation! You guessed the sequence '#{correct.upcase}' in #{@count} guesses over #{@minutes} minutes, #{@seconds} seconds. \nDo you want to (p)lay again or (q)uit?"
   end
 
   def end_game
