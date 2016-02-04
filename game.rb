@@ -36,7 +36,6 @@ class Game
       puts "Your guess is too short. Try again."
       game_start
     else
-
       guess_validator(output)
     end
   end
@@ -58,6 +57,7 @@ class Game
       if guess == correct[index]
         @position += 1
       end
+      @position
     end
   end
 
